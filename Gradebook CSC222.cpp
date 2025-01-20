@@ -1,7 +1,8 @@
 // Gradebook CSC222.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //Name: Yochanan Allen 
+// https://github.com/YochananAllen/Gradebook-CSC222.git
 
-//The teacher would like a program to read the student’s names and test scores from a file, calculate
+//The teacher would like a program to read the studentâ€™s names and test scores from a file, calculate
 //the average of the test scores and then provide a letter grade for the average.A test data file has
 //been provided with six students and five test scores.
 
