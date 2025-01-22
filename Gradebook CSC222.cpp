@@ -9,22 +9,58 @@
 
 
 #include <iostream>
-#include <string>
 #include <iomanip>
+#include <string>
 
 using namespace std;
 
+const int NUM_TESTS = 5; 
+const int MAX_STUDENTS = 6; 
 
-double calculateAverage(double scores[], int size) {
-    double total = 0;
-    for (int i = 0; i < size; i++) {
-        total += scores[i];
-    }
-    return total / size;
+
+void calculateAverages(int scores[][NUM_TESTS], double averages[], int numStudents);
+char calculateLetterGrade(double average);
+void produceReport(string names[], double averages[], int numStudents);
+
+int main() {
+    
+    string names[MAX_STUDENTS] = {
+        "Aaliyah", "Briana", "Devon", "Javier", "Johnathan", "Vanessa"
+    };
+
+    int scores[MAX_STUDENTS][NUM_TESTS] = {
+        {82, 72, 91, 74, 82},
+        {87, 97, 82, 92, 94},
+        {92, 98, 91, 100, 85},
+        {85, 82, 72, 84, 85},
+        {78, 60, 63, 79, 81},
+        {74, 91, 77, 74, 80}
+    };
+
+    double averages[MAX_STUDENTS]; 
+
+    
+    calculateAverages(scores, averages, MAX_STUDENTS);
+
+    
+    produceReport(names, averages, MAX_STUDENTS);
+
+    return 0;
 }
 
 
-char getLetterGrade(double average) {
+void calculateAverages(int scores[][NUM_TESTS], double averages[], int numStudents) {
+    for (int i = 0; i < numStudents; i++) {
+        int sum = 0;
+        for (int j = 0; j < NUM_TESTS; j++) {
+            sum += scores[i][j];
+        }
+        averages[i] = static_cast<double>(sum) / NUM_TESTS; 
+    }
+}
+
+
+char calculateLetterGrade(double average) {
     if (average >= 90) {
         return 'A';
     }
@@ -42,76 +78,19 @@ char getLetterGrade(double average) {
     }
 }
 
-int main() {
-    int NUM_STUDENTS, NUM_TESTS;
-
-    
-    cout << "Enter the number of students (1 to 6): ";
-    cin >> NUM_STUDENTS;
-
-    
-    for (; NUM_STUDENTS < 1 || NUM_STUDENTS > 6; ) {
-        cout << "Invalid input. Please enter a number between 1 and 6: ";
-        cin >> NUM_STUDENTS;
-    }
+void produceReport(string names[], double averages[], int numStudents) {
+    cout << left << setw(20) << "Student Name"
+        << setw(10) << "Average"
+        << setw(10) << "Grade" << endl;
 
    
-    cout << "Enter the number of tests (1 to 5): ";
-    cin >> NUM_TESTS;
 
-    
-    for (; NUM_TESTS < 1 || NUM_TESTS > 5; ) {
-        cout << "Invalid input. Please enter a number between 1 and 5: ";
-        cin >> NUM_TESTS;
+    for (int i = 0; i < numStudents; i++) {
+        char grade = calculateLetterGrade(averages[i]);
+        cout << left << setw(20) << names[i]
+            << setw(10) << fixed << setprecision(2) << averages[i]
+            << setw(10) << grade << endl;
     }
-
-   
-    string* studentNames = new string[NUM_STUDENTS];  
-    char* grades = new char[NUM_STUDENTS];             
-    double** testScores = new double* [NUM_STUDENTS];   
-
-   
-    for (int i = 0; i < NUM_STUDENTS; i++) {
-        testScores[i] = new double[NUM_TESTS];
-    }
-
-    
-    for (int i = 0; i < NUM_STUDENTS; i++) {
-        cout << "Enter the name of student #" << (i + 1) << ": ";
-        cin >> studentNames[i];
-
-        cout << "Enter the " << NUM_TESTS << " test scores for " << studentNames[i] << ":" << endl;
-        for (int j = 0; j < NUM_TESTS; j++) {
-            cout << "Test score #" << (j + 1) << ": ";
-            cin >> testScores[i][j];
-        }
-    }
-
-    
-    cout << "\nStudent Scores and Grades:" << endl;
-    cout << fixed << setprecision(2);  
-
-    
-    for (int i = 0; i < NUM_STUDENTS; i++) {
-        
-        double average = calculateAverage(testScores[i], NUM_TESTS);
-
-      
-        grades[i] = getLetterGrade(average);
-
-        
-        cout << studentNames[i] << " - Average Score: " << average << " - Grade: " << grades[i] << endl;
-    }
-
-  
-    for (int i = 0; i < NUM_STUDENTS; i++) {
-        delete[] testScores[i];
-    }
-    delete[] testScores;
-    delete[] studentNames;
-    delete[] grades;
-
-    return 0;
 }
 
 
